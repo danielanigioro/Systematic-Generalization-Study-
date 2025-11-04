@@ -1,1 +1,30 @@
+seed: 2400
+out_dir: results
+data_dir: data/generated
+split: template
+train_file: tpl_train.jsonl
+val_file:   tpl_val.jsonl
+test_file:  tpl_test.jsonl
+
+
+
+# vocab
+max_tokens: 64     # enough for our tiny grammar
+max_actions: 64
+
+# model
+model: lstm_attn
+embed_dim: 128
+hidden_dim: 256
+num_layers: 2
+dropout: 0.1
+
+# train
+batch_size: 128
+lr: 3e-4
+epochs: 10
+teacher_force: 0.5
+
+# misc
+save_best: true
 

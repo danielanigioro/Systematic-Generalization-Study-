@@ -1,0 +1,159 @@
+PowerShell Commands Guide
+=========================
+
+GENERAL NAVIGATION
+------------------
+pwd                          - Print current directory (alias of Get-Location).
+  Example: pwd
+Get-Location                 - Show current directory path.
+  Example: Get-Location
+cd <path>                    - Change directory.
+  Example: cd C:\Users\me\project
+ls                           - List files (alias of Get-ChildItem).
+dir                          - Same as ls (alias of Get-ChildItem).
+Get-ChildItem                - List files/directories with details.
+  Example: Get-ChildItem -Recurse
+
+FILES & DIRECTORIES
+-------------------
+New-Item -ItemType Directory -Force <path>
+                            - Create a folder (makes parents with -Force).
+  Example: New-Item -ItemType Directory -Force results
+New-Item -ItemType File <path>
+                            - Create a new empty file.
+  Example: New-Item -ItemType File README.md
+Rename-Item <old> -NewName <new>
+                            - Rename file or folder.
+  Example: Rename-Item -LiteralPath 'results\human' -NewName 'human.csv'
+Copy-Item <src> <dest>      - Copy files/folders.
+  Example: Copy-Item src\plots.py backup\plots.py
+Move-Item <src> <dest>      - Move or rename files/folders.
+  Example: Move-Item logs\*.txt archive\
+Remove-Item <path>          - Delete file/folder (use -Recurse for dirs).
+  Example: Remove-Item .\.venv -Recurse -Force
+
+READ/WRITE FILE CONTENT
+-----------------------
+Get-Content <file>          - Print file contents (supports -TotalCount N).
+  Example: Get-Content data\generated\iid_train.jsonl -TotalCount 3
+Set-Content <file> <text>   - Overwrite a file with text.
+  Example: 'hello' | Set-Content hello.txt
+Add-Content <file> <text>   - Append text to a file.
+  Example: 'more' | Add-Content hello.txt
+Out-File <file>             - Redirect pipeline to file (supports -Encoding).
+  Example: 'header1,header2' | Out-File -Encoding utf8 results\human.csv
+> and >>                     - Redirection operators (overwrite/append).
+  Example: 'line' > file.txt ; 'next' >> file.txt
+
+PYTHON & VENV
+-------------
+python -V                    - Show Python version.
+python -m venv .venv         - Create a virtual environment in .venv folder.
+.\.venv\Scripts\Activate.ps1 - Activate the venv (PowerShell).
+deactivate                   - Deactivate the venv.
+Set-ExecutionPolicy -Scope Process Bypass -Force
+                            - Temporarily allow running activation scripts in this PS session.
+  Example: Set-ExecutionPolicy -Scope Process Bypass -Force
+
+PIP & DEPENDENCIES
+------------------
+python -m pip install -r requirements.txt
+                            - Install packages from requirements.txt into active venv.
+pip install <pkg>           - Install a package.
+  Example: pip install streamlit
+pip freeze > requirements-lock.txt
+                            - Save exact package versions for reproducibility.
+pip cache purge             - Clear pip’s download cache (fix some install issues).
+
+PROJECT COMMANDS (THIS REPO)
+----------------------------
+python -m src.data --config configs\base.yaml
+                            - Generate datasets (IID / length / template / distractor).
+python -m src.train --config configs\lstm.yaml
+                            - Train LSTM baseline using given config.
+python -m src.train --config configs\transformer.yaml
+                            - Train Transformer baseline (after adding transformer model).
+python -m src.evaluate --config <config.yaml>
+                            - (If present) Evaluate model and write per-length/template CSVs.
+python -m src.aggregate_human --human_csv results\human.csv
+                            - Aggregate human results → human_acc_by_length.csv / human_acc_by_template.csv
+python -m src.plots --overall results\results.csv
+                            - Plot overall accuracy bars by split.
+python -m src.plots --by_length results\acc_by_length.csv
+                            - Plot model accuracy vs input length.
+python -m src.plots --by_template results\acc_by_template.csv --top_k 12
+                            - Plot per-template accuracy (hardest 12).
+python -m src.plots --overlay_len_model results\acc_by_length.csv --overlay_len_human results\human_acc_by_length.csv
+                            - Overlay human vs model accuracy by length.
+python -m src.plots --overlay_tpl_model results\acc_by_template.csv --overlay_tpl_human results\human_acc_by_template.csv --top_k 12
+                            - Overlay human vs model per-template accuracy.
+
+STREAMLIT (HUMAN BASELINE UI)
+-----------------------------
+streamlit run src\human_app.py
+                            - Launch human labeling UI in the browser.
+                            - Set 'Path to test JSONL' (e.g., data\generated\len_test.jsonl) and submit results.
+                            - Outputs rows to results\human.csv.
+
+GIT (COMMON)
+------------
+git status                  - Show repo status.
+git add <path>              - Stage changes.
+git commit -m "message"     - Commit staged changes.
+git push                    - Push commits to remote branch.
+git pull                    - Fetch + merge from remote.
+git fetch                   - Update remote refs without merging.
+git checkout <branch|hash>  - Switch branch or checkout a commit.
+git log --oneline --graph --decorate --all
+                            - Pretty commit history.
+git restore <path>          - Restore file content from last commit (modern replacement for checkout).
+git diff                    - Show unstaged changes.
+
+ZIP & ARCHIVES
+--------------
+Compress-Archive -Path <src> -DestinationPath <zip>
+                            - Create a .zip archive.
+  Example: Compress-Archive -Path results\* -DestinationPath results.zip
+Expand-Archive <zip> -DestinationPath <dir>
+                            - Extract a .zip archive.
+
+SYSTEM/ENV HELPERS
+------------------
+Get-ExecutionPolicy         - Show current script execution policy.
+Set-ExecutionPolicy -Scope CurrentUser RemoteSigned
+                            - Allow local scripts to run for current user.
+$env:PATH                   - View or set PATH for current session.
+  Example: $env:PATH = "C:\Python311;"+$env:PATH
+[Environment]::SetEnvironmentVariable("PATH", "C:\Python311;"+$env:PATH, "User")
+                            - Permanently add to PATH for current user.
+Get-Help <cmd> -Online      - Open web help for a command.
+Get-Command <name>          - Find commands/cmdlets available.
+Start-Process <exe>         - Launch a process (use -Verb RunAs for admin).
+  Example: Start-Process PowerShell -Verb RunAs
+Get-Process                  - List running processes.
+Stop-Process -Id <pid>      - Kill a process by PID.
+
+NETWORKING QUICK CHECKS
+-----------------------
+Test-NetConnection <host>  - Diagnose network reachability and ports.
+  Example: Test-NetConnection files.pythonhosted.org -Port 443
+ping <host>                 - ICMP ping (alias to Test-Connection).
+
+TROUBLESHOOTING TIPS
+--------------------
+- “running scripts is disabled” when activating venv:
+    Set-ExecutionPolicy -Scope Process Bypass -Force
+- pip timeouts on large wheels:
+    pip install --default-timeout=120 -r requirements.txt
+- Windows path with spaces: quote it
+    python -m src.train --config "configs\lstm.yaml"
+- Ensure you’re in the venv (prompt shows "(.venv)"):
+    .\.venv\Scripts\Activate.ps1
+
+CUDA/CPU TORCH INSTALL (OPTIONAL)
+---------------------------------
+# CPU-only (smaller)
+pip install --index-url https://download.pytorch.org/whl/cpu torch torchvision torchaudio
+
+# CUDA 12.4 example
+pip install --index-url https://download.pytorch.org/whl/cu124 torch torchvision torchaudio

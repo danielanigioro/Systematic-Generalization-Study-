@@ -1,1 +1,8 @@
+seed: 2400
+out_dir: data/generated
+splits:
+  iid: {n_train: 8000, n_val: 1000, n_test: 2000, max_depth: 2, max_len: 10}
+  length: { n_train: 1000, n_val: 200, n_test: 500, train_max_len: 6, test_min_len: 8, test_max_len: 18, test_max_depth: 3 }
+  template: {n_train: 8000, n_val: 1000, n_test: 2000, holdout_templates: ["V-D-M", "(V-D)AND(V-D)"]}
+  distractor: {n_train: 8000, n_val: 1000, n_test: 2000, add_adj: true}
 

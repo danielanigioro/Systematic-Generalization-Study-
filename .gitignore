@@ -1,1 +1,12 @@
+__pycache__/
+*.pyc
+.venv/
+.env
+results/checkpoints/
+results/logs/
+results/predictions/
+results/figures/
+results/human/
+data/generated/
+*.ipynb_checkpoints
 
