@@ -1,6 +1,3 @@
-<p align="center">
-  <img src="assets/banner.svg" width="100%" alt="BreakPointAI: Commands→Actions Generalization">
-</p>
 
 <img width="1200" height="300" alt="image" src="https://github.com/user-attachments/assets/414000d1-0a6e-4547-a275-529be671dbb0" />
 
