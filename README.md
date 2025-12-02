@@ -2,6 +2,7 @@
 <img width="1200" height="300" alt="image" src="https://github.com/user-attachments/assets/414000d1-0a6e-4547-a275-529be671dbb0" />
 <img width="1800" height="1000" alt="overlay_tpl_human_model_demo" src="https://github.com/user-attachments/assets/9e08c52e-d433-4f6d-8938-ed660bda97d4" />
 <img width="1600" height="1000" alt="overlay_len_human_model_demo" src="https://github.com/user-attachments/assets/d1731891-3068-4f5f-be0d-e621e564705d" />
+<img width="1200" height="800" alt="image" src="https://github.com/user-attachments/assets/62d9277b-7e62-4eee-ad94-64bb8a1be0fc" />
 
 
 # Systematic-Generalization-Study-
