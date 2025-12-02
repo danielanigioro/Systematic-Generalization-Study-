@@ -130,7 +130,7 @@ def main():
             best_acc = acc
             torch.save({"model": model.state_dict(),
                         "tok_vocab": tok_vocab, "act_vocab": act_vocab}, ckpt_path)
-            print(f"  saved → {ckpt_path}")
+            print(f"  saved -> {ckpt_path}")
 
     # ---------------- final test ----------------
     test_dl  = DataLoader(test_ds, batch_size=batch_size, shuffle=False, collate_fn=pad_collate)

@@ -1,10 +1,10 @@
 seed: 2400
 out_dir: results
 data_dir: data/generated
-split: template
-train_file: tpl_train.jsonl
-val_file:   tpl_val.jsonl
-test_file:  tpl_test.jsonl
+split: length
+train_file: len_train.jsonl
+val_file:   len_val.jsonl
+test_file:  len_test.jsonl
 
 
 
@@ -22,7 +22,7 @@ dropout: 0.1
 # train
 batch_size: 128
 lr: 3e-4
-epochs: 10
+epochs: 20
 teacher_force: 0.5
 
 # misc

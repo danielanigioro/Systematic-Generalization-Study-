@@ -45,7 +45,7 @@ def plot_overall(results_csv, out_png):
 # ---------------------------
 # Accuracy vs input length
 # ---------------------------
-def plot_acc_by_length(acc_by_length_csv, out_png):
+def plot_acc_by_length(acc_by_length_csv, out_png, len_min=None, len_max=None):
     L, A = [], []
     with open(acc_by_length_csv, newline="") as f:
         r = csv.DictReader(f)
@@ -53,6 +53,10 @@ def plot_acc_by_length(acc_by_length_csv, out_png):
             L.append(int(row["length"]))
             A.append(float(row["acc"]))
     z = sorted(zip(L, A), key=lambda x: x[0])
+    if len_min is not None or len_max is not None:
+        lo = len_min if len_min is not None else -1e9
+        hi = len_max if len_max is not None else 1e9
+        z = [p for p in z if lo <= p[0] <= hi]
     L = [x for x, _ in z]
     A = [y for _, y in z]
 
@@ -186,6 +190,8 @@ def main():
     ap.add_argument("--out_overall", type=str, default="results/overall_acc.png")
     ap.add_argument("--by_length", type=str, help="Path to results/acc_by_length.csv")
     ap.add_argument("--out_by_length", type=str, default="results/acc_by_length.png")
+    ap.add_argument("--len_min", type=int, default=None, help="Optional minimum length to display")
+    ap.add_argument("--len_max", type=int, default=None, help="Optional maximum length to display")
     ap.add_argument("--by_template", type=str, help="Path to results/acc_by_template.csv")
     ap.add_argument("--out_by_template", type=str, default="results/acc_by_template.png")
     ap.add_argument("--top_k", type=int, default=None, help="Show only the hardest K templates")
@@ -204,7 +210,7 @@ def main():
     if args.overall:
         plot_overall(args.overall, args.out_overall)
     if args.by_length:
-        plot_acc_by_length(args.by_length, args.out_by_length)
+        plot_acc_by_length(args.by_length, args.out_by_length, args.len_min, args.len_max)
     if args.by_template:
         plot_acc_by_template(args.by_template, args.out_by_template, top_k=args.top_k)
 

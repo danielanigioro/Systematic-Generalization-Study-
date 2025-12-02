@@ -3,10 +3,10 @@ out_dir: results
 data_dir: data/generated
 
 # pick one per run by editing these four lines:
-split: iid              # iid | length | template | distractor
-train_file: iid_train.jsonl
-val_file:   iid_val.jsonl
-test_file:  iid_test.jsonl
+split: length              # iid | length | template | distractor
+train_file: len_train.jsonl
+val_file:   len_val.jsonl
+test_file:  len_test.jsonl
 
 # model
 model: transformer
@@ -19,7 +19,7 @@ dropout: 0.1
 # train
 batch_size: 128
 lr: 3e-4
-epochs: 15
+epochs: 20
 teacher_force: 0.0   # transformers handle 0.0 fine for eval; leave TF for training path only
 save_best: true
 
