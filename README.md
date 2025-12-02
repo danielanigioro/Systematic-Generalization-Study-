@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/banner.svg" width="100%" alt="BreakPointAI: Commands→Actions Generalization">
+</p>
+
 # Systematic-Generalization-Study-
 This repo evaluates whether small neural networks can follow longer, recombined instructions as reliably as humans. We generate a compact command language (e.g., ‘walk left twice and jump’), map it to action sequences, and train three model families (BiLSTM+Attention, Transformer, and a structure-biased Transformer with an operator bottleneck). We probe systematic compositional generalization with length and template-held-out splits, add distractors to test robustness, collect a human baseline, and report accuracy, calibration (ECE), and the inflection point where models break while humans stay strong. Everything is reproducible via run.sh and documented with plots and a short technical write-up.
 
